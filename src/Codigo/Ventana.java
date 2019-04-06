@@ -11,8 +11,8 @@ public class Ventana extends javax.swing.JFrame {
 
     public Ventana() {
         initComponents();
-        arbol();
-        estilo();
+        arbol(); //acciones que pueden ejecutarse en otra clase , recomendable
+        estilo(); // nose porque pero no reconoce la carpeta imagen para cargarlas, pueden comentarla sino
     }
     
     public void estilo(){
@@ -24,16 +24,16 @@ public class Ventana extends javax.swing.JFrame {
     
     public void arbol(){
         DefaultTreeModel arbol = (DefaultTreeModel) jtree.getModel();
-	DefaultMutableTreeNode nroot = new DefaultMutableTreeNode("PC");
+	DefaultMutableTreeNode nodo = new DefaultMutableTreeNode("PC");
 
-	arbol.setRoot(nroot); //Le agrego el nodo raiz al arbol
+	arbol.setRoot(nodo); //Le agrego el nodo raiz al arbol
         
         //bucle para interactur con los archivos c,d,e,etc
         for(int i=0;i<File.listRoots().length;i++){
             DefaultMutableTreeNode hijo=new DefaultMutableTreeNode(File.listRoots()[i]);
             String a = ""+File.listRoots()[i];
             Cargar(arbol, hijo, a); //lleno el subarbol c,d,e,etc respectivamente
-            arbol.insertNodeInto(hijo, nroot, i);// cargo a la raiz principal PC los subarboles
+            arbol.insertNodeInto(hijo, nodo, i);// cargo a la raiz principal PC los subarboles
         }
         
     }
