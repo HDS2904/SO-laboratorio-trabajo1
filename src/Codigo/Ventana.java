@@ -46,6 +46,7 @@ public class Ventana extends javax.swing.JFrame {
     String a;
     public Ventana() {
         initComponents();
+        jtree.setCellRenderer( new MyTreeCellRenderer());
         a="";
         modeloLista = new DefaultListModel();
         jList.setModel(modeloLista);
@@ -1608,25 +1609,55 @@ public class Ventana extends javax.swing.JFrame {
         render.setLeafIcon(new ImageIcon(this.getClass().getResource("../Imagen/carpeta.png")));
         render.setOpenIcon(new ImageIcon(this.getClass().getResource("../Imagen/carpeta.png")));
         render.setClosedIcon(new ImageIcon(this.getClass().getResource("../Imagen/carpeta.png")));
+        
     }
     
     
     public void Raiz() {
-
-        cn = new Contenedor("","Raiz");
+        
+        //NODO raiz principal
+        cn = new Contenedor("",".");
         nroot = new DefaultMutableTreeNode(cn);
         
+        //Nodo acceso rápido
+        cn = new Contenedor("","Acceso rápico");
+        DefaultMutableTreeNode fa = new DefaultMutableTreeNode(cn);
+        String[] f = new String[] {"Escritorio","Descargas","Documentos","Imagenes","Música","Vídeos"};
+        for(int i=0;i<6;i++){
+            cn = new Contenedor("",f[i]);
+            DefaultMutableTreeNode ft = new DefaultMutableTreeNode(cn);
+            fa.add(ft);
+        }
+        nroot.add(fa);
+        
+        //nodo One Drive
+        cn = new Contenedor("","OneDrive");
+        fa = new DefaultMutableTreeNode(cn);
+        nroot.add(fa);
+        
+        //Nodo Equipo
         cn = new Contenedor("","Este Equipo");
         nr2 = new DefaultMutableTreeNode(cn);
+        for(int i=0;i<6;i++){
+            cn = new Contenedor("",f[i]);
+            DefaultMutableTreeNode ft = new DefaultMutableTreeNode(cn);
+            nr2.add(ft);
+        }
         nroot.add(nr2);
         
+        //Nodo red
+        cn = new Contenedor("","Red");
+        fa = new DefaultMutableTreeNode(cn);
+        nroot.add(fa);
+        
         nav.setRoot(nroot); //Le agrego el nodo raiz al arbol
+        
         
          for(int i=0;i<File.listRoots().length;i++){
             DefaultMutableTreeNode hijo=new DefaultMutableTreeNode(File.listRoots()[i]);
             nr2.add(hijo);
-        }  
-         EventoClickList();
+        }
+         EventoClickList(); //Agregar nietos despues del click en un nodo
 
     }
     
@@ -1686,7 +1717,7 @@ public class Ventana extends javax.swing.JFrame {
         });
     }
     
-    
+    // obetenr ruta del nodo seleccionado en cadena
     public String obtenerRuta(DefaultMutableTreeNode p){
         String ruta="";
         try{
@@ -1751,7 +1782,6 @@ public class Ventana extends javax.swing.JFrame {
                         
                         if(jList.getSelectedValue().equals(aux.getNombre())){
                             nodoactual=nieto;
-                            System.out.println(nodoactual);
                             TreePath path = new TreePath(nodoactual.getPath());
                             jtree.expandPath(path);
                             i=10000;
